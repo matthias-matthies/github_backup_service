@@ -1,0 +1,76 @@
+# ---------------------------------------------------------------------------
+# GitHub Organisation Backup Service – example configuration
+# Copy this file to config.yml and fill in your values.
+# All secrets can also be supplied via environment variables (see comments).
+# ---------------------------------------------------------------------------
+
+github:
+  # GitHub App ID (env: GITHUB_APP_ID)
+  app_id: "123456"
+
+  # Absolute path to the GitHub App RSA private-key PEM file
+  # (env: GITHUB_PRIVATE_KEY_PATH)
+  private_key_path: "/path/to/github-app.private-key.pem"
+
+  # Name of the GitHub organisation to back up
+  # (env: GITHUB_ORG_NAME)
+  org_name: "my-organisation"
+
+  # GitHub API base URL – override for GitHub Enterprise Server
+  # Default: https://api.github.com
+  base_url: "https://api.github.com"
+
+# ---------------------------------------------------------------------------
+output:
+  # Root directory where all backup data will be written
+  # (env: BACKUP_OUTPUT_PATH)
+  base_path: "./backup"
+
+  # Compress JSON/YAML output files (gzip). Default: false
+  compress: false
+
+# ---------------------------------------------------------------------------
+rate_limiting:
+  # Stop making API requests when remaining quota drops to this value
+  min_remaining: 100
+
+  # Extra seconds added on top of the rate-limit reset timestamp
+  sleep_buffer: 1.1
+
+# ---------------------------------------------------------------------------
+retries:
+  # Maximum number of retry attempts for transient failures
+  max_retries: 3
+
+  # Base delay in seconds for exponential back-off
+  base_delay: 1.0
+
+  # Maximum delay cap in seconds
+  max_delay: 60.0
+
+# ---------------------------------------------------------------------------
+parallelism:
+  # Number of repositories to process concurrently (1 = sequential)
+  repo_workers: 4
+
+  # Number of concurrent asset-download threads per repository
+  asset_workers: 2
+
+# ---------------------------------------------------------------------------
+logging:
+  # Log level: DEBUG | INFO | WARNING | ERROR | CRITICAL
+  level: "INFO"
+
+  # Path to the log file (leave empty to log to stdout only)
+  log_file: "logs/backup.log"
+
+# ---------------------------------------------------------------------------
+collectors:
+  # Toggle individual collectors on/off
+  repositories: true
+  metadata: true
+  issues_prs: true
+  reviews: true
+  releases: true
+  workflows: true
+  org_settings: true
